@@ -1,0 +1,6 @@
+# ~/.zshrc.local — Machine-specific shell config (not committed)
+# Copy this file to ~/.zshrc.local and adjust values as needed.
+
+# Example: work-specific tools, private registries, local overrides
+# export PATH="/some/custom/path:$PATH"
+# alias mywork='command'

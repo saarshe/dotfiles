@@ -1,0 +1,25 @@
+# --- Default stow ignores ---
+RCS
+.+,v
+CVS
+\.\#.+
+\.cvsignore
+\.svn
+_darcs
+\.hg
+\.git
+\.gitignore
+\.gitmodules
+.+~
+\#.*\#
+^/README.*
+^/LICENSE.*
+^/COPYING
+
+# --- Custom ignores ---
+^/bootstrap\.sh
+^/setup
+^/templates
+^/wizard
+^/docs
+^/\.stow-local-ignore
