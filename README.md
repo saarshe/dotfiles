@@ -195,21 +195,55 @@ Templates for `.zshrc.local` and `.secrets` are in [`templates/`](templates/).
 
 ## Bootstrap a new machine
 
+One-liner for a fresh machine:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/saarshe/dotfiles/master/install.sh)
+```
+
+Or clone manually:
+
 ```bash
 git clone https://github.com/saarshe/dotfiles.git ~/.dotfiles
 ~/.dotfiles/bootstrap.sh
 ```
 
-The bootstrap script installs:
+Use `--link-only` to skip dependency installation and just deploy symlinks:
 
-- [Homebrew](https://brew.sh)
-- [GNU Stow](https://www.gnu.org/software/stow/)
-- [Oh My Zsh](https://ohmyz.sh)
-- Zsh plugins: zsh-autosuggestions, zsh-syntax-highlighting, fzf-tab
+```bash
+./bootstrap.sh --link-only
+```
+
+The bootstrap script interactively installs:
+
+- [Homebrew](https://brew.sh) and [Bun](https://bun.sh) (automatically, if missing)
+- [GNU Stow](https://www.gnu.org/software/stow/) (required)
+- [Oh My Zsh](https://ohmyz.sh) with plugins: zsh-autosuggestions, zsh-syntax-highlighting, fzf-tab
 - [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
 - CLI tools: [fnm](https://github.com/Schniz/fnm), [pyenv](https://github.com/pyenv/pyenv), [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf)
 
-Then deploys dotfiles via `stow` and copies template files for local config.
+Then deploys dotfiles via `stow` and copies template files for local config. Existing conflicting files can be backed up, overwritten, or skipped per-file.
+
+## Repo structure
+
+```
+~/.dotfiles/
+├── .zshrc, .zprofile, .p10k.zsh, .gitconfig   # dotfiles (symlinked to ~)
+├── .config/aerospace/, .config/borders/        # app configs
+├── templates/                                  # local config templates
+├── install.sh                                  # one-liner remote installer
+├── bootstrap.sh                                # bash entry point (installs brew + bun)
+└── setup/                                      # TypeScript bootstrap (run by Bun)
+    ├── index.ts                                # orchestrator
+    ├── config.ts                               # constants, result tracker
+    ├── ui.ts                                   # animated output, spinners, toggle selector
+    ├── stow.ts                                 # ignore parsing, file discovery, symlink check
+    ├── conflicts.ts                            # backup / overwrite / skip logic
+    ├── steps.ts                                # tool definitions + interactive installer
+    ├── summary.ts                              # post-run summary
+    ├── templates.ts                            # local config file creation
+    └── __tests__/                              # unit tests (bun test)
+```
 
 ## Adding a new dotfile
 
