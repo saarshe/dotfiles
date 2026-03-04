@@ -506,7 +506,6 @@ function createLocalConfigs() {
 // ---------------------------------------------------------------------------
 
 async function printSummary(stowFiles: string[]) {
-  const newLinked = stowFiles.length - alreadyLinked.length - skipped.length;
   const sections: string[] = [];
 
   if (toolsInstalled.length > 0) {
@@ -524,12 +523,30 @@ async function printSummary(stowFiles: string[]) {
       summarySection("Tools failed", toolsFailed, color.red, "✗")
     );
   }
-  if (newLinked > 0) {
-    sections.push(color.green(`Dotfiles linked: ${newLinked} file(s)`));
+  const skippedSet = new Set(skipped);
+  const alreadySet = new Set(alreadyLinked);
+  const newlyLinked = stowFiles.filter(
+    (f) => !alreadySet.has(f) && !skippedSet.has(f)
+  );
+
+  if (newlyLinked.length > 0) {
+    sections.push(
+      summarySection(
+        "Dotfiles linked",
+        newlyLinked.map((f) => `~/${f}`),
+        color.green,
+        "→"
+      )
+    );
   }
   if (alreadyLinked.length > 0) {
     sections.push(
-      color.dim(`Dotfiles already linked: ${alreadyLinked.length} file(s)`)
+      summarySection(
+        "Dotfiles already linked",
+        alreadyLinked.map((f) => `~/${f}`),
+        color.dim,
+        "→"
+      )
     );
   }
   if (backedUp.length > 0) {
