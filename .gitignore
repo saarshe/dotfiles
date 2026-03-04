@@ -2,3 +2,5 @@
 .gitconfig
 .secrets
 .zshrc.local
+node_modules/
+bun.lock
