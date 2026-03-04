@@ -1,6 +1,7 @@
 import { $ } from "bun";
 import * as p from "@clack/prompts";
 import color from "picocolors";
+import gradient from "gradient-string";
 import { lstatSync } from "fs";
 import { join } from "path";
 import {
@@ -17,10 +18,28 @@ import { installDeps } from "./steps.ts";
 import { printSummary } from "./summary.ts";
 import { createLocalConfigs } from "./templates.ts";
 
+const BANNER = `██████╗  ██████╗ ████████╗███████╗██╗██╗     ███████╗███████╗
+██╔══██╗██╔═══██╗╚══██╔══╝██╔════╝██║██║     ██╔════╝██╔════╝
+██║  ██║██║   ██║   ██║   █████╗  ██║██║     █████╗  ███████╗
+██║  ██║██║   ██║   ██║   ██╔══╝  ██║██║     ██╔══╝  ╚════██║
+██████╔╝╚██████╔╝   ██║   ██║     ██║███████╗███████╗███████║
+╚═════╝  ╚═════╝    ╚═╝   ╚═╝     ╚═╝╚══════╝╚══════╝╚══════╝`;
+
+const RAINBOW: [string, ...string[]] = [
+  "#ff0000", "#ff7f00", "#ffff00", "#00ff00", "#0077ff", "#4b0082", "#8b00ff",
+];
+
 const tracker = createTracker();
 const paths = { home: HOME, backupDir: BACKUP_DIR, dotfilesDir: DOTFILES_DIR };
 
 async function main() {
+  const PAD = "    ";
+  console.log();
+  const colored = gradient(RAINBOW).multiline(BANNER);
+  for (const line of colored.split("\n")) {
+    console.log(PAD + line);
+  }
+  console.log();
   p.intro(color.bgCyan(color.black(" dotfiles bootstrap ")));
 
   if (LINK_ONLY) {

@@ -1,4 +1,6 @@
-# dotfiles
+<p align="center">
+  <img src="assets/dotfiles.png" alt="dotfiles" width="600">
+</p>
 
 My macOS development environment — shell, window manager, and tools config. This is a living repo that reflects what I actually use day-to-day; it updates as my workflow evolves.
 
@@ -6,15 +8,44 @@ Feel free to fork it, gut what you don't need, and make it yours.
 
 Managed with [GNU Stow](https://www.gnu.org/software/stow/) — a simple tool that creates symlinks from a source directory into a target directory, mirroring the folder structure. Instead of copying config files around, stow links them so edits in the repo are immediately live.
 
-Everything lives in a single flat stow package — one command symlinks all files into `~`:
+## Table of contents
+
+- [Installation](#installation)
+- [What's included](#whats-included)
+- [Machine-local files](#machine-local-files-not-committed)
+- [Repo structure](#repo-structure)
+- [Adding a new dotfile](#adding-a-new-dotfile)
+
+## Installation
+
+One-liner for a fresh machine:
 
 ```bash
-cd ~/.dotfiles && stow --no-folding -t ~ .
+bash <(curl -fsSL https://raw.githubusercontent.com/saarshe/dotfiles/master/install.sh)
 ```
 
-`--no-folding` creates individual file symlinks (not directory symlinks), so `~/.config/` can hold other non-managed files alongside these.
+Or clone manually:
 
-The bootstrap script automatically detects conflicts with existing files and lets you choose how to handle each one — backup, overwrite, or skip.
+```bash
+git clone https://github.com/saarshe/dotfiles.git ~/.dotfiles
+~/.dotfiles/bootstrap.sh
+```
+
+Use `--link-only` to skip dependency installation and just deploy symlinks:
+
+```bash
+./bootstrap.sh --link-only
+```
+
+The bootstrap script interactively installs:
+
+- [Homebrew](https://brew.sh) and [Bun](https://bun.sh) (automatically, if missing)
+- [GNU Stow](https://www.gnu.org/software/stow/) (required)
+- [Oh My Zsh](https://ohmyz.sh) with plugins: zsh-autosuggestions, zsh-syntax-highlighting, fzf-tab
+- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
+- CLI tools: [fnm](https://github.com/Schniz/fnm), [pyenv](https://github.com/pyenv/pyenv), [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf)
+
+Then deploys dotfiles via `stow` and copies template files for local config. Existing conflicting files can be backed up, overwritten, or skipped per-file.
 
 ## What's included
 
@@ -192,37 +223,6 @@ Apps are automatically moved to dedicated workspaces on launch:
 | `~/.secrets` | API tokens and secrets (sourced by `.zshrc`) |
 
 Templates for `.zshrc.local` and `.secrets` are in [`templates/`](templates/).
-
-## Bootstrap a new machine
-
-One-liner for a fresh machine:
-
-```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/saarshe/dotfiles/master/install.sh)
-```
-
-Or clone manually:
-
-```bash
-git clone https://github.com/saarshe/dotfiles.git ~/.dotfiles
-~/.dotfiles/bootstrap.sh
-```
-
-Use `--link-only` to skip dependency installation and just deploy symlinks:
-
-```bash
-./bootstrap.sh --link-only
-```
-
-The bootstrap script interactively installs:
-
-- [Homebrew](https://brew.sh) and [Bun](https://bun.sh) (automatically, if missing)
-- [GNU Stow](https://www.gnu.org/software/stow/) (required)
-- [Oh My Zsh](https://ohmyz.sh) with plugins: zsh-autosuggestions, zsh-syntax-highlighting, fzf-tab
-- [Powerlevel10k](https://github.com/romkatv/powerlevel10k) theme
-- CLI tools: [fnm](https://github.com/Schniz/fnm), [pyenv](https://github.com/pyenv/pyenv), [zoxide](https://github.com/ajeetdsouza/zoxide), [fzf](https://github.com/junegunn/fzf)
-
-Then deploys dotfiles via `stow` and copies template files for local config. Existing conflicting files can be backed up, overwritten, or skipped per-file.
 
 ## Repo structure
 
