@@ -228,9 +228,10 @@ Templates for `.zshrc.local` and `.secrets` are in [`templates/`](templates/).
 
 ```
 ~/.dotfiles/
-├── .zshrc, .zprofile, .p10k.zsh, .gitconfig   # dotfiles (symlinked to ~)
+├── .zshrc, .zprofile, .p10k.zsh               # dotfiles (symlinked to ~)
 ├── .config/aerospace/, .config/borders/        # app configs
 ├── templates/                                  # local config templates
+├── assets/                                     # README images
 ├── install.sh                                  # one-liner remote installer
 ├── bootstrap.sh                                # bash entry point (installs brew + bun)
 └── setup/                                      # TypeScript bootstrap (run by Bun)
