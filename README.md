@@ -6,15 +6,34 @@ My macOS development environment — shell, window manager, and tools config. Th
 
 Feel free to fork it, gut what you don't need, and make it yours.
 
-Managed with [GNU Stow](https://www.gnu.org/software/stow/) — a simple tool that creates symlinks from a source directory into a target directory, mirroring the folder structure. Instead of copying config files around, stow links them so edits in the repo are immediately live.
-
 ## Table of contents
 
+- [How it works](#how-it-works)
 - [Installation](#installation)
 - [What's included](#whats-included)
 - [Machine-local files](#machine-local-files-not-committed)
 - [Repo structure](#repo-structure)
 - [Adding a new dotfile](#adding-a-new-dotfile)
+
+## How it works
+
+This repo mirrors your home directory structure. Each file in `~/.dotfiles/` maps to the same path under `~`:
+
+```
+~/.dotfiles/.zshrc          →  ~/.zshrc
+~/.dotfiles/.config/aerospace/aerospace.toml  →  ~/.config/aerospace/aerospace.toml
+```
+
+[GNU Stow](https://www.gnu.org/software/stow/) creates these symlinks automatically — so edits in the repo are immediately live, and `git diff` shows exactly what changed.
+
+The bootstrap script (`bootstrap.sh`) handles the full setup:
+
+1. Installs **Homebrew** and **Bun** if missing
+2. Presents an interactive tool selector (toggle on/off with keyboard)
+3. Installs selected tools with progress spinners
+4. Detects conflicting files and lets you **backup**, **overwrite**, or **skip** each one
+5. Runs `stow` to deploy all symlinks
+6. Creates local config templates (`~/.zshrc.local`, `~/.secrets`)
 
 ## Installation
 
