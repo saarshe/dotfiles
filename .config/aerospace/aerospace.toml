@@ -213,6 +213,9 @@ automatically-unhide-macos-hidden-apps = true
 if.app-id = 'com.googlecode.iterm2'
 run = "move-node-to-workspace T"
 [[on-window-detected]]
+if.app-id = 'com.mitchellh.ghostty'
+run = "move-node-to-workspace T"
+[[on-window-detected]]
 if.app-id = 'com.spotify.client'
 run = "move-node-to-workspace M"
 [[on-window-detected]]
